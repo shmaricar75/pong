@@ -1,0 +1,565 @@
+/* ============================================
+   NEON PONG — Futuristic Arcade Stylesheet
+   ============================================ */
+
+/* ---------- CSS Custom Properties ---------- */
+:root {
+    --bg-deep: #050510;
+    --bg-surface: #0a0a1a;
+    --bg-card: #0f0f2a;
+    --bg-card-hover: #14143a;
+
+    --cyan: #00f0ff;
+    --cyan-dim: #00a0aa;
+    --magenta: #ff00e5;
+    --magenta-dim: #aa0099;
+    --electric-blue: #3366ff;
+    --neon-green: #00ff88;
+
+    --text-primary: #e8e8f0;
+    --text-secondary: #8888aa;
+    --text-muted: #555570;
+
+    --glow-cyan: 0 0 12px var(--cyan), 0 0 40px rgba(0, 240, 255, 0.3);
+    --glow-magenta: 0 0 12px var(--magenta), 0 0 40px rgba(255, 0, 229, 0.3);
+    --glow-blue: 0 0 12px var(--electric-blue), 0 0 40px rgba(51, 102, 255, 0.3);
+
+    --font-display: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+
+    --radius: 8px;
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+/* ---------- Particles Background ---------- */
+#particles-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at 20% 50%, rgba(0, 240, 255, 0.04) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(255, 0, 229, 0.04) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 20%, rgba(51, 102, 255, 0.03) 0%, transparent 50%);
+}
+
+/* ---------- Screen System ---------- */
+.screen {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+}
+
+.screen-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    padding: 40px;
+    max-width: 520px;
+    width: 90%;
+}
+
+/* ---------- Title ---------- */
+.game-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+    font-family: var(--font-display);
+}
+
+.title-neon {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 400;
+    letter-spacing: 1em;
+    padding-left: 1em; /* offset letter-spacing */
+    color: var(--cyan);
+    text-shadow: var(--glow-cyan);
+    animation: pulse-glow-cyan 3s ease-in-out infinite alternate;
+}
+
+.title-pong {
+    font-size: clamp(4rem, 14vw, 8rem);
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    padding-left: 0.15em;
+    background: linear-gradient(135deg, var(--cyan), var(--magenta));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.4));
+}
+
+.subtitle {
+    font-family: var(--font-display);
+    font-size: clamp(0.65rem, 1.8vw, 0.85rem);
+    letter-spacing: 0.5em;
+    padding-left: 0.5em;
+    color: var(--text-secondary);
+}
+
+@keyframes pulse-glow-cyan {
+    0% { text-shadow: 0 0 8px var(--cyan), 0 0 20px rgba(0, 240, 255, 0.2); }
+    100% { text-shadow: 0 0 16px var(--cyan), 0 0 50px rgba(0, 240, 255, 0.5); }
+}
+
+/* ---------- Difficulty Selector ---------- */
+.difficulty-selector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.difficulty-selector .label {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    color: var(--text-muted);
+}
+
+.difficulty-buttons {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.diff-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 8px;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: var(--font-display);
+}
+
+.diff-btn .diff-icon {
+    font-size: 1.4rem;
+    transition: var(--transition);
+}
+
+.diff-btn .diff-name {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+}
+
+.diff-btn:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(0, 240, 255, 0.15);
+    color: var(--text-primary);
+}
+
+.diff-btn.active {
+    background: rgba(0, 240, 255, 0.08);
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.1), inset 0 0 20px rgba(0, 240, 255, 0.05);
+}
+
+.diff-btn.active .diff-icon {
+    text-shadow: 0 0 10px var(--cyan);
+}
+
+/* ---------- Buttons ---------- */
+.primary-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 48px;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--bg-deep);
+    background: linear-gradient(135deg, var(--cyan), var(--electric-blue));
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 240, 255, 0.3);
+}
+
+.primary-btn:active {
+    transform: translateY(0);
+}
+
+.primary-btn .btn-glow {
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, var(--cyan), var(--magenta));
+    opacity: 0;
+    z-index: -1;
+    filter: blur(12px);
+    transition: opacity 0.4s ease;
+}
+
+.primary-btn:hover .btn-glow {
+    opacity: 0.6;
+}
+
+.primary-btn.small {
+    padding: 12px 36px;
+    font-size: 0.75rem;
+}
+
+.secondary-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 40px;
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.secondary-btn:hover {
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.secondary-btn.small {
+    padding: 10px 32px;
+    font-size: 0.7rem;
+}
+
+/* ---------- Controls Hint ---------- */
+.controls-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding-top: 8px;
+}
+
+.controls-hint p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+
+.controls-hint strong {
+    color: var(--text-secondary);
+}
+
+/* ---------- HUD ---------- */
+#hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    background: linear-gradient(to bottom, rgba(5, 5, 16, 0.9), transparent);
+}
+
+.hud-player, .hud-ai {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.hud-label {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--text-muted);
+}
+
+.hud-score {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 900;
+    min-width: 2ch;
+    text-align: center;
+}
+
+.hud-player .hud-score {
+    color: var(--cyan);
+    text-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+}
+
+.hud-ai .hud-score {
+    color: var(--magenta);
+    text-shadow: 0 0 15px rgba(255, 0, 229, 0.5);
+}
+
+.hud-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.hud-round {
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    color: var(--text-muted);
+}
+
+.icon-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.icon-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ---------- Canvas ---------- */
+#pong-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+}
+
+/* ---------- Overlay ---------- */
+.overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 5, 16, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.overlay-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.overlay-content h2 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: 0.4em;
+    padding-left: 0.4em;
+    color: var(--text-primary);
+}
+
+/* ---------- Game Over ---------- */
+.gameover-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    letter-spacing: 0.3em;
+    padding-left: 0.3em;
+    text-align: center;
+}
+
+.gameover-title.win {
+    color: var(--cyan);
+    text-shadow: var(--glow-cyan);
+}
+
+.gameover-title.lose {
+    color: var(--magenta);
+    text-shadow: var(--glow-magenta);
+}
+
+.final-scores {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.final-score-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 24px 36px;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius);
+    min-width: 110px;
+}
+
+.player-card {
+    border-color: rgba(0, 240, 255, 0.15);
+}
+
+.ai-card {
+    border-color: rgba(255, 0, 229, 0.15);
+}
+
+.fs-label {
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--text-muted);
+}
+
+.fs-value {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 900;
+}
+
+.player-card .fs-value {
+    color: var(--cyan);
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+}
+
+.ai-card .fs-value {
+    color: var(--magenta);
+    text-shadow: 0 0 20px rgba(255, 0, 229, 0.4);
+}
+
+.vs-divider {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+}
+
+.gameover-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+    #hud {
+        padding: 12px 16px;
+    }
+
+    .hud-label {
+        font-size: 0.5rem;
+    }
+
+    .hud-round {
+        font-size: 0.5rem;
+    }
+
+    .icon-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+    }
+
+    .screen-content {
+        gap: 24px;
+        padding: 24px;
+    }
+
+    .difficulty-buttons {
+        gap: 8px;
+    }
+
+    .diff-btn {
+        padding: 12px 6px;
+    }
+
+    .primary-btn {
+        padding: 14px 36px;
+        font-size: 0.8rem;
+    }
+
+    .final-score-card {
+        padding: 16px 24px;
+        min-width: 90px;
+    }
+
+    .controls-hint p {
+        font-size: 0.7rem;
+    }
+}
+
+/* ---------- Animations ---------- */
+@keyframes score-pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+.score-animate {
+    animation: score-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}

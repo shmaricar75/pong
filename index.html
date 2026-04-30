@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="A sleek, futuristic Pong game with neon aesthetics, AI opponent, and adjustable difficulty.">
+    <title>NEON PONG — Futuristic Arcade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Ambient background particles -->
+    <div id="particles-bg"></div>
+
+    <!-- ==================== START SCREEN ==================== -->
+    <div id="start-screen" class="screen active">
+        <div class="screen-content">
+            <h1 class="game-title">
+                <span class="title-neon">NEON</span>
+                <span class="title-pong">PONG</span>
+            </h1>
+            <p class="subtitle">FUTURISTIC ARCADE EXPERIENCE</p>
+
+            <div class="difficulty-selector">
+                <p class="label">SELECT DIFFICULTY</p>
+                <div class="difficulty-buttons">
+                    <button class="diff-btn" data-difficulty="easy">
+                        <span class="diff-icon">◇</span>
+                        <span class="diff-name">EASY</span>
+                    </button>
+                    <button class="diff-btn active" data-difficulty="medium">
+                        <span class="diff-icon">◈</span>
+                        <span class="diff-name">MEDIUM</span>
+                    </button>
+                    <button class="diff-btn" data-difficulty="hard">
+                        <span class="diff-icon">◆</span>
+                        <span class="diff-name">HARD</span>
+                    </button>
+                </div>
+            </div>
+
+            <button id="start-btn" class="primary-btn">
+                <span class="btn-text">START GAME</span>
+                <span class="btn-glow"></span>
+            </button>
+
+            <div class="controls-hint">
+                <p>⌨ <strong>W / S</strong> or <strong>↑ / ↓</strong> to move</p>
+                <p>📱 Swipe or touch to control paddle</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== GAME SCREEN ==================== -->
+    <div id="game-screen" class="screen">
+        <!-- HUD -->
+        <div id="hud">
+            <div class="hud-player">
+                <span class="hud-label">PLAYER</span>
+                <span id="player-score" class="hud-score">0</span>
+            </div>
+            <div class="hud-center">
+                <span id="round-display" class="hud-round">ROUND 1</span>
+                <button id="pause-btn" class="icon-btn" title="Pause">⏸</button>
+            </div>
+            <div class="hud-ai">
+                <span id="ai-score" class="hud-score">0</span>
+                <span class="hud-label">AI</span>
+            </div>
+        </div>
+
+        <!-- Canvas -->
+        <canvas id="pong-canvas"></canvas>
+
+        <!-- Pause Overlay -->
+        <div id="pause-overlay" class="overlay hidden">
+            <div class="overlay-content">
+                <h2>PAUSED</h2>
+                <button id="resume-btn" class="primary-btn small">RESUME</button>
+                <button id="quit-btn" class="secondary-btn small">QUIT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== GAME OVER SCREEN ==================== -->
+    <div id="gameover-screen" class="screen">
+        <div class="screen-content">
+            <h2 id="gameover-title" class="gameover-title">GAME OVER</h2>
+            <div class="final-scores">
+                <div class="final-score-card player-card">
+                    <span class="fs-label">PLAYER</span>
+                    <span id="final-player-score" class="fs-value">0</span>
+                </div>
+                <span class="vs-divider">VS</span>
+                <div class="final-score-card ai-card">
+                    <span class="fs-label">AI</span>
+                    <span id="final-ai-score" class="fs-value">0</span>
+                </div>
+            </div>
+            <div class="gameover-actions">
+                <button id="rematch-btn" class="primary-btn">REMATCH</button>
+                <button id="menu-btn" class="secondary-btn">MAIN MENU</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
